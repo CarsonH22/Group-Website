@@ -1,20 +1,30 @@
-.leftbox{
+*{
     box-sizing: border-box;
     margin: 0;
     align-items: left;
     justify-content: left;
 }
 
-.middlebox{
+*{
     box-sizing: border-box;
     margin: 0;
     align-items: middle;
     justify-content: middle;
 }
 
-.rightbox{
+*{
     box-sizing: border-box;
     margin: 0;
     align-items: right;
     justify-content: right;
+}
+
+.calculator {
+    padding: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    border: solid 1px #002237;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    margin-top: 40px;
 }
