@@ -73,12 +73,24 @@ def addComments():
     if not current_game:
         return redirect(url_for('pick_game'))
 
+    rating = request.form.get('rating', '').strip()
+    comment = request.form.get('comments', '').strip()
+    name = request.form.get('name', '').strip()
+
+    if not name and not comment and not rating:
+        database = AddComments.query.filter_by(current_game=current_game).all()
+        return render_template('ericForm.html', database=database, game=current_game)
+
+    if not rating or not comment:
+        error = "Please provide both a comment and a rating."
+        return render_template('ericForm.html', error=error, name=name, comment=comment, rating=rating,game=current_game)
+
     if request.method == 'POST':
         addCommentToGame(request.form)
 
         # return render_template('ericForm.html', current_game=current_game, error=error,  #                       previous_comments=previous_comments[current_game], name=name, comment=comment,  #                       rating=rating)
     database = AddComments.query.filter_by(current_game=current_game).all()
-    return render_template('ericForm.html', database=database)
+    return render_template('ericForm.html', database=database, game=current_game)
 
     # ----------------------
     if __name__ == '__main__':
@@ -102,7 +114,7 @@ def addCommentToGame(formData):
         if entry.name == name and entryComment == comment and entry.rating == rating:
             add = False
             break
-    if add:
+    if add and comment and rating:
         new_profile = AddComments(current_game=current_game, name=name, comment=comment, rating=rating)
         db.session.add(new_profile)
         db.session.commit()

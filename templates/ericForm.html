@@ -12,16 +12,16 @@
     <a href="{{ url_for('clear') }}">Clear Comments</a>
 {% endblock %}
 {% block sidebar_left %}
-    <h3>{{ current_game }} Info</h3>
+    <h3>{{ game }} Info</h3>
     <div class="game-sidebar">
-        {% if current_game == "Valorant" %}
+        {% if game == "Valorant" %}
             <img src="https://www.talkesport.com/wp-content/uploads/valorant-stuck-on-loading-screen.webp"
                  alt="Valorant Map">
             <p>Tactical FPS with agents and spike planting.</p>
-        {% elif current_game == "Rainbow Six Siege" %}
+        {% elif game == "Rainbow Six Siege" %}
             <img src="https://i.redd.it/s5df0ihs55981.jpg" alt="Rainbow Six Siege Map">
             <p>Team-based tactical shooter focused on objectives.</p>
-        {% elif current_game == "CS:GO" %}
+        {% elif game == "CS:GO" %}
             <img src="https://media.steampowered.com/apps/csgo/blog/images/fb_image.png?v=6" alt="CS:GO Map">
             <p>Competitive FPS, bomb defusal and hostage rescue.</p>
         {% endif %}
