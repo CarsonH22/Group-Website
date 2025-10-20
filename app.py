@@ -79,28 +79,7 @@ def addComments():
     rating = 0
 
     if request.method == 'POST':
-        name = request.form.get('name', '').strip()
-        comment = request.form.get('comments', '').strip()
-        rating = int(request.form.get('rating', 0))
-
-        if not comment:
-            error = "Please enter a comment"
-
-        try:
-            database = AddComments.query.filter_by(current_game=current_game).all()
-            add = True
-            for entry in database:
-                if entry.name == name and entry.comment == comment and entry.rating == rating:
-                    add = False
-                    break
-            if add:
-                new_profile = AddComments(current_game=current_game, name=name, comment=comment, rating=rating)
-                db.session.add(new_profile)
-                db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            error = f"An error occurred while saving your profile. Please try again. {str(e)}"
-            return render_template('ericForm.html', error=error)
+        addCommentToGame(request.form)
 
         # return render_template('ericForm.html', current_game=current_game, error=error,  #                       previous_comments=previous_comments[current_game], name=name, comment=comment,  #                       rating=rating)
     database = AddComments.query.filter_by(current_game=current_game).all()
@@ -112,33 +91,34 @@ def addComments():
         app.run(debug=True)
 
 
-@app.route('/append' , methods=['GET', 'POST'])
+def addCommentToGame(formData):
+    current_game = chosen_game.get("game")
+    name = formData.get('name', '').strip()
+    comment = formData.get('comments', '').strip()
+    if comment.endswith(" - Appended Text"):
+        comment = comment[:-len(" - Appended Text")]
+    rating = int(formData.get('rating', 0))
+
+    database = AddComments.query.filter_by(current_game=current_game).all()
+    add = True
+    for entry in database:
+        entryComment = entry.comment
+        if entryComment.endswith(" - Appended Text"):
+            entryComment = entryComment[:-len(" - Appended Text")]
+        if entry.name == name and entryComment == comment and entry.rating == rating:
+            add = False
+            break
+    if add:
+        new_profile = AddComments(current_game=current_game, name=name, comment=comment, rating=rating)
+        db.session.add(new_profile)
+        db.session.commit()
+
+
+@app.route('/append', methods=['GET', 'POST'])
 def append():
     current_game = chosen_game.get("game")
     if request.method == 'POST':
-        name = request.form.get('name', '').strip()
-        comment = request.form.get('comments', '').strip()
-        rating = int(request.form.get('rating', 0))
-
-        if not comment:
-            error = "Please enter a comment"
-
-        try:
-            database = AddComments.query.filter_by(current_game=current_game).all()
-            add = True
-            for entry in database:
-                testComment = entry.comment + " - Appended Text"
-                if entry.name == name and entry.comment == testComment and entry.rating == rating:
-                    add = False
-                    break
-            if add:
-                new_profile = AddComments(current_game=current_game, name=name, comment=comment, rating=rating)
-                db.session.add(new_profile)
-                db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            error = f"An error occurred while saving your profile. Please try again. {str(e)}"
-            return render_template('ericForm.html', error=error)
+        addCommentToGame(request.form)
     try:
         profilesToAppend = AddComments.query.filter_by(current_game=current_game).all()
         for profile in profilesToAppend:
@@ -150,6 +130,25 @@ def append():
     except Exception as e:
         db.session.rollback()
         error = f"An error occurred while appending to comments. Please try again. {str(e)}"
+        return render_template('carsonForm.html', error=error)
+
+
+@app.route('/remove', methods=['GET', 'POST'])
+def remove():
+    current_game = chosen_game.get("game")
+    if request.method == 'POST':
+        addCommentToGame(request.form)
+    try:
+        profilesToRemove = AddComments.query.filter_by(current_game=current_game).all()
+        for profile in profilesToRemove:
+            if 'Appended Text' in profile.comment:
+                profile.comment = profile.comment.replace(" - Appended Text", "")
+        db.session.commit()
+        return render_template('ericForm.html', game=current_game, database=profilesToRemove)
+
+    except Exception as e:
+        db.session.rollback()
+        error = f"An error occurred while removing from comments. Please try again. {str(e)}"
         return render_template('carsonForm.html', error=error)
 
     current_game = chosen_game.get("game")
