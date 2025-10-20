@@ -6,8 +6,10 @@
 
 {% block title %}Add Comments{% endblock %}
 {% block nav %}
+    |
     <a href="{{ url_for('append') }}">Append</a> |
-    <a href="{{ url_for('remove') }}">Remove</a>
+    <a href="{{ url_for('remove') }}">Remove Append</a> |
+    <a href="{{ url_for('clear') }}">Clear Comments</a>
 {% endblock %}
 {% block sidebar_left %}
     <h3>{{ current_game }} Info</h3>

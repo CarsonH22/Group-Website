@@ -83,8 +83,7 @@ def addComments():
 
         # return render_template('ericForm.html', current_game=current_game, error=error,  #                       previous_comments=previous_comments[current_game], name=name, comment=comment,  #                       rating=rating)
     database = AddComments.query.filter_by(current_game=current_game).all()
-    return render_template('ericForm.html', game=current_game, error=error, name=name, comment=comment, rating=rating,
-                           database=database)
+    return render_template('ericForm.html', database=database)
 
     # ----------------------
     if __name__ == '__main__':
@@ -117,15 +116,13 @@ def addCommentToGame(formData):
 @app.route('/append', methods=['GET', 'POST'])
 def append():
     current_game = chosen_game.get("game")
-    if request.method == 'POST':
-        addCommentToGame(request.form)
     try:
         profilesToAppend = AddComments.query.filter_by(current_game=current_game).all()
         for profile in profilesToAppend:
             if 'Appended Text' not in profile.comment:
                 profile.comment += " - Appended Text"
         db.session.commit()
-        return render_template('ericForm.html', game=current_game, database=profilesToAppend)
+        return redirect(url_for('addComments'))
 
     except Exception as e:
         db.session.rollback()
@@ -136,23 +133,31 @@ def append():
 @app.route('/remove', methods=['GET', 'POST'])
 def remove():
     current_game = chosen_game.get("game")
-    if request.method == 'POST':
-        addCommentToGame(request.form)
     try:
         profilesToRemove = AddComments.query.filter_by(current_game=current_game).all()
         for profile in profilesToRemove:
             if 'Appended Text' in profile.comment:
                 profile.comment = profile.comment.replace(" - Appended Text", "")
         db.session.commit()
-        return render_template('ericForm.html', game=current_game, database=profilesToRemove)
+        return redirect(url_for('addComments'))
 
     except Exception as e:
         db.session.rollback()
         error = f"An error occurred while removing from comments. Please try again. {str(e)}"
         return render_template('carsonForm.html', error=error)
 
+
+@app.route('/clear', methods=['GET', 'POST'])
+def clear():
     current_game = chosen_game.get("game")
-    if not current_game:
-        return redirect(url_for('pick_game'))
-    database = AddComments.query.filter_by(current_game=current_game).all()
-    return render_template('ericForm.html', game=current_game, database=database)
+    try:
+        profilesToDelete = AddComments.query.filter_by(current_game=current_game).all()
+        for profile in profilesToDelete:
+            db.session.delete(profile)
+        db.session.commit()
+        return redirect(url_for('addComments'))
+
+    except Exception as e:
+        db.session.rollback()
+        error = f"An error occurred while deleting comments. Please try again. {str(e)}"
+        return render_template('carsonForm.html', error=error)
