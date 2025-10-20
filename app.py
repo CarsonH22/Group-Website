@@ -168,3 +168,18 @@ def clear():
         db.session.rollback()
         error = f"An error occurred while deleting comments. Please try again. {str(e)}"
         return render_template('carsonForm.html', error=error)
+
+@app.route('/removeLast', methods=['GET', 'POST'])
+def removeLast():
+    current_game = chosen_game.get("game")
+    try:
+        last_profile = AddComments.query.filter_by(current_game=current_game).order_by(AddComments.id.desc()).first()
+        if last_profile:
+            db.session.delete(last_profile)
+            db.session.commit()
+        return redirect(url_for('addComments'))
+
+    except Exception as e:
+        db.session.rollback()
+        error = f"An error occurred while deleting comments. Please try again. {str(e)}"
+        return render_template('carsonForm.html', error=error)
