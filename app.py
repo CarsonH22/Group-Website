@@ -73,11 +73,6 @@ def addComments():
     if not current_game:
         return redirect(url_for('pick_game'))
 
-    error = None
-    name = ""
-    comment = ""
-    rating = 0
-
     if request.method == 'POST':
         addCommentToGame(request.form)
 
