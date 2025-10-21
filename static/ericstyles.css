@@ -10,16 +10,29 @@ header, footer, nav {
     color: rgb(255, 255, 255);
     padding: 10px;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    min-height: 3rem;
+    max-height: fit-content;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
-nav a {
-    color: white;
-    text-decoration: none;
+
+a {
+    background-color: whitesmoke;
+    color: black;
+    padding: 10px;
+    border-radius: 15px;
     margin: 0 10px;
+    text-decoration: none;
 }
 
 nav a:hover {
     text-decoration: underline;
+    padding: 13px;
+    background-color: darkblue;
 }
 
 /* 3-box grid layout */
@@ -41,7 +54,7 @@ nav a:hover {
     background: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Form styling */
