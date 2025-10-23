@@ -10,16 +10,41 @@ header, footer, nav {
     color: rgb(255, 255, 255);
     padding: 10px;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    min-height: 3rem;
+    max-height: fit-content;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
-nav a {
-    color: white;
-    text-decoration: none;
+#appendContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 10px;
+}
+header{
+    padding: 0;
+}
+
+a:not(:has(>button)) {
+    background-color: whitesmoke;
+    color: black;
+    padding: 10px;
+    border-radius: 15px;
     margin: 0 10px;
+    text-decoration: none;
 }
 
-nav a:hover {
+nav a:not(:has(>button)):hover {
     text-decoration: underline;
+    padding: 13px;
+    background-color: darkblue;
 }
 
 /* 3-box grid layout */
@@ -41,7 +66,7 @@ nav a:hover {
     background: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Form styling */
@@ -70,6 +95,8 @@ button {
 
 button:hover {
     background-color: #0056b3;
+    text-decoration: underline;
+    color: #111;
 }
 
 /* Star rating */

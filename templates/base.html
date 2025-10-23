@@ -13,13 +13,14 @@
   <header>
     <h1>Game Information</h1>
   </header>
-
   <nav>
-    <a href="{{ url_for('pick_game') }}">Pick Game</a> |
-    <a href="{{ url_for('chaoForm') }}">Selected Game</a> |
-    <a href="{{ url_for('addComments') }}">Comments</a> |
-    <a href="{{ url_for('append') }}">Append</a>
+      <a href="{{ url_for('pick_game') }}">Pick Game</a>
+      <a href="{{ url_for('chaoForm') }}">Selected Game</a>
+      <a href="{{ url_for('addComments') }}">Comments</a>
   </nav>
+   {% block nav %}
+      {% endblock %}
+
 
   <main class="container">
     <div class="sidebar-left">
