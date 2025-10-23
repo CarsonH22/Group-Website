@@ -6,11 +6,12 @@
 
 {% block title %}Add Comments{% endblock %}
 {% block nav %}
-
-    <a href="{{ url_for('append') }}">Append</a>
-    <a href="{{ url_for('remove') }}">Remove Append</a>
-    <a href="{{ url_for('clear') }}">Clear Comments</a>
-    <a href="{{ url_for('removeLast') }}">Remove Last Comment</a>
+    <div id="appendContainer">
+    <a href="{{ url_for('append') }}"><button>Append</button></a>
+    <a href="{{ url_for('remove') }}"><button>Remove Append</button></a>
+    <a href="{{ url_for('clear') }}"><button>Clear Comments</button></a>
+    <a href="{{ url_for('removeLast') }}"><button>Remove Last Comment</button></a>
+    </div>
 {% endblock %}
 {% block sidebar_left %}
     <h3>{{ game }} Info</h3>

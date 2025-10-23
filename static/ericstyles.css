@@ -19,8 +19,20 @@ header, footer, nav {
     flex-wrap: wrap;
 }
 
+#appendContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 10px;
+}
+header{
+    padding: 0;
+}
 
-a {
+a:not(:has(>button)) {
     background-color: whitesmoke;
     color: black;
     padding: 10px;
@@ -29,7 +41,7 @@ a {
     text-decoration: none;
 }
 
-nav a:hover {
+nav a:not(:has(>button)):hover {
     text-decoration: underline;
     padding: 13px;
     background-color: darkblue;
@@ -83,6 +95,8 @@ button {
 
 button:hover {
     background-color: #0056b3;
+    text-decoration: underline;
+    color: #111;
 }
 
 /* Star rating */
