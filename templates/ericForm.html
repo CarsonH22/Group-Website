@@ -1,25 +1,57 @@
-{% extends "base.html" %} {% block title%}{{super()}} - Profile{% endblock %} {%
-block content%}
+{% extends "base.html" %}
 
-<h2>User Profile</h2>
-{% if error %}
-<p class="error">{{error}}</p>
-{% endif %}
-
-<form action="" method="post">
-  <div>
-    <label for="name">Name *:</label>
-    <input type="text" name="name" id="name" required />
-  </div>
-  <div>
-    <label for="age">Age *:</label>
-    <input type="number" name="age" id="age" min="0" required />
-  </div>
-    <div>
-      <label for="favorite_game">Favorite Game:</label>
-      <input type="text" name="favorite_game" id="favorite_game" />
-  </div>
-  <button type="submit">Save Profile</button>
-</form>
-<h1>TESTING ERIC FORM</h1>
+{% block css_link %}
+<link rel="stylesheet" href="{{ url_for('static', filename='ericstyles.css') }}">
 {% endblock %}
+
+{% block content %}
+<!-- ✅ Add inline style for dynamic background -->
+<div class="overlay" style="background-image: url('{{ game_bg_url }}'); background-size: cover; background-position: center; background-attachment: fixed;">
+  
+  <!-- Comment Box -->
+  <div class="comment-box">
+    <h2>Leave a Comment for {{ current_game }}</h2>
+    <form action="{{ url_for('addComments') }}" method="POST">
+      <label>Name:</label>
+      <input type="text" name="name" placeholder="Your name...">
+
+      <label>Rating:</label>
+      <div class="star-rating">
+        {% for i in range(5,0,-1) %}
+          <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}">
+          <label for="star{{ i }}">★</label>
+        {% endfor %}
+      </div>
+
+      <label>Comment:</label>
+      <textarea name="comments" placeholder="Write your comment..."></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <!-- Transparent Comment Feed -->
+  <div class="comments-feed">
+    {% if database %}
+      <ul class="previous-comments">
+        {% for c in database %}
+          <li>
+            <strong>{{ c.name or "Anonymous" }}</strong> —
+            {% for i in range(c.rating) %}★{% endfor %}
+            {% for i in range(5 - c.rating) %}☆{% endfor %}
+            <p>{{ c.comment }}</p>
+            <div class="comment-meta">
+              🕒 {{ c.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p style="color:#ddd;">No comments yet. Be the first to share!</p>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}
+
+

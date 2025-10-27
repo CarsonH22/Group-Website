@@ -1,18 +1,96 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block css_link %}
+<link rel="stylesheet" href="{{ url_for('static', filename='chaostyles.css') }}">
+{% endblock %}
+
+{% block title %}Selected Game{% endblock %}
+
+{% set game_data = {
+    "Valorant": {
+        "description": "Valorant is a tactical first-person shooter where two teams compete to plant or defuse a spike. Players choose agents with unique abilities to gain strategic advantages.",
+        "big_image": "https://cdn.arstechnica.net/wp-content/uploads/2020/04/valorant-listing-scaled.jpg",
+        "sidebar_left": {
+            "url": "https://www.mandatory.gg/wp-content/uploads/mandatory-valorant-guide-debloquer-agents-achat-liste.jpg",
+            "desc": "As of now Valorant has a pool of 20 Characters with unique abilities and roles to choose from, with more coming in the future."
+        },
+        "sidebar_right": {
+            "url": "https://esportsinsider.com/wp-content/uploads/2025/06/All-VALORANT-Arenas-in-2025-From-Casual-Play-to-Pro-Matches-medium_large.jpg",
+            "desc": "Valorant currently has 17 playable maps: 12 for standard competitive and unrated play, 5 for Team Deathmatch, and 1 practice map. Only a rotating pool of 7 maps is available for ranked play."
+        }
+    },
+    "Rainbow Six Siege": {
+        "description": "Rainbow Six Siege is a team-based tactical shooter focused on close-quarters combat. Players choose operators with unique gadgets to attack or defend objectives.",
+        "big_image": "https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/4IZecJyhvcIUxxu0Rd1vjX/99fe1a724d46a4d9ca70c76c7a78496f/r6s-homepage-meta__1_.jpg",
+        "sidebar_left": {
+            "url": "https://pbs.twimg.com/media/FI1iDtxXwAEF1sj.jpg:large",
+            "desc": "There are currently 76 playable Operators in Rainbow Six Siege, split between Attackers and Defenders. New Operators are added seasonally."
+        },
+        "sidebar_right": {
+            "url": "https://images.squarespace-cdn.com/content/v1/59af2189c534a58c97bd63b3/1722437556604-109B105IK0MVBN1H1CYV/Siege+Maps.jpg",
+            "desc": "Rainbow Six Siege features a rotating pool of 24 maps available across ranked and casual modes. All post-launch maps have been added for free over the years."
+        }
+    },
+    "CS:GO": {
+        "description": "CS:GO (Counter-Strike: Global Offensive) is a competitive first-person shooter where two teams — Terrorists and Counter-Terrorists — complete objectives such as bomb defusal or hostage rescue.",
+        "big_image": "https://www.dexerto.com/cdn-image/wp-content/uploads/2023/03/14/csgo.jpg",
+        "sidebar_left": {
+            "url": "https://app.skin.land/blogfiles/9EPLrBhStgjJE9msf0mIUBidnT2oZ8pjLJbU7bET.jpg",
+            "desc": "CS:GO does not feature unique character roles; player models are purely cosmetic."
+        },
+        "sidebar_right": {
+            "url": "https://www.pinnacle.com/Cms_Data/Contents/Guest/Media/esports2017/Article-Images/CSGO/2019/Evergreen/2019-CSGO-Map-Pool/article-cs-go-map-pool-hero.jpg",
+            "desc": "CS:GO’s Active Duty pool typically features 7 competitive maps, with many more available for casual and community play."
+        }
+    }
+} %}
+
+{% block sidebar_left %}
+<h3>Players Info</h3>
+{% if game in game_data %}
+  <img src="{{ game_data[game].sidebar_left.url }}" alt="Left Map" style="width:100%; border-radius:5px; margin-bottom:5px;">
+  <p style="font-size:0.9em;">{{ game_data[game].sidebar_left.desc }}</p>
+{% else %}
+  <p>No map available.</p>
+{% endif %}
+{% endblock %}
+
+{% block sidebar_right %}
+<h3>Maps Info</h3>
+{% if game in game_data %}
+  <img src="{{ game_data[game].sidebar_right.url }}" alt="Right Map" style="width:100%; border-radius:5px; margin-bottom:5px;">
+  <p style="font-size:0.9em;">{{ game_data[game].sidebar_right.desc }}</p>
+{% else %}
+  <p>No map available.</p>
+{% endif %}
+{% endblock %}
+
 {% block content %}
-    <h2>Profile Saved Successfully</h2>
-    <p>Thank you, {{ name }}. Your profile has been saved.</p>
-    <div>
-        <h3>Your Profile Information:</h3>
-        <p><strong>Name:</strong> {{ name }}</p>
-        <p><strong>Age:</strong> {{ age }}</p>
-        <p><strong>Favorite Game:</strong> {{ game }}</p>
-        
-    </div>
-    <a href="{{ url_for('profile') }}">Create Another Profile</a>
-    <a href="{{ url_for('addComments') }}">Feedback</a>
-    <div>
-        <label for="comments">Care to comment on why this is the best game</label>
-        <textarea id="comments" name="comments" rows="4"></textarea>
-    </div>
-    {% endblock %}
+{% if game in game_data %}
+  <!-- Big central image -->
+  <div style="text-align:center; margin-bottom:20px;">
+    <img src="{{ game_data[game].big_image }}" alt="{{ game }} Big Image"
+         style="max-width:90%; border-radius:10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+  </div>
+
+  <!-- Game description -->
+  <h2>{{ game }}</h2>
+  <p>{{ game_data[game].description }}</p>
+
+{% else %}
+  <p>No game selected.</p>
+{% endif %}
+
+<!-- Display Comments -->
+{% for c in database %}
+  <p>
+    <strong>{{ c.name }}</strong>: {{ c.comment }}
+    <br><small>Posted on {{ c.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+  </p>
+{% endfor %}
+
+<br>
+<a href="{{ url_for('pick_game') }}">Pick Again</a>
+{% endblock %}
+
+

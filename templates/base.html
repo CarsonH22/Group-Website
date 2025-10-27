@@ -1,21 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Website{% endblock %}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% block css_link %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='chaostyles.css') }}">
+  {% endblock %}
+  <title>{% block title %}My Website{% endblock %}</title>
 </head>
+
 <body>
-    <header>
-        <h1>Welcome to My Website</h1>
-    </header>
-    <main>
-        {% block content %}
-        <p>This is the default content.</p>
-        {% endblock %}
-    </main>
-    <footer>
-        <p>&copy; 2023 My Website</p>
-    </footer>
+  <!-- ✅ Centered Header -->
+  <header style="text-align: center;">
+    <h1>Game Information</h1>
+  </header>
+
+  <!-- ✅ Centered Navigation -->
+  <nav style="text-align: center;">
+    <a href="{{ url_for('pick_game') }}">Pick Game</a> |
+    <a href="{{ url_for('chaoForm') }}">Selected Game</a> |
+    <a href="{{ url_for('addComments') }}">Comments</a>
+  </nav>
+
+  <!-- ✅ Main 3-Column Layout -->
+  <main class="container">
+    <div class="sidebar-left">
+      {% block sidebar_left %}{% endblock %}
+    </div>
+
+    <div class="main-content">
+      {% block content %}{% endblock %}
+    </div>
+
+    <div class="sidebar-right">
+      {% block sidebar_right %}{% endblock %}
+    </div>
+  </main>
+
+  <!-- ✅ Centered Footer -->
+  <footer style="text-align: center;">
+    <p>© 2025 My Website</p>
+  </footer>
 </body>
 </html>
+
+

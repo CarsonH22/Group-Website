@@ -1,22 +1,146 @@
+/* ---------- GLOBAL LAYOUT ---------- */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #000;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
+
+/* ---------- HEADER ---------- */
 header {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 0;
-    text-align: center;
+  background-color: #000;
+  color: rgb(0, 0, 0);
+  padding: 25px 0;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
 }
-nav {
-    margin: 0;
-    padding: 10px;
-    background-color: #333;
-}
+
+/* ---------- ERROR MESSAGE ---------- */
 .error {
-    color: red;
-    font-weight: bold;
+  color: #000000;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
+
+/* ---------- GAME SELECTION LAYOUT ---------- */
+.game-selection {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.game-options-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  gap: 30px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+/* ---------- GAME OPTION ---------- */
+.game-option input[type="radio"] {
+  display: none;
+}
+
+.game-card {
+  background-color: #000000;
+  border: 2px solid transparent;
+  border-radius: 15px;
+  width: 400px;             /* wider */
+  height: 500px;            /* ✅ taller/longer */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ---------- IMAGE ---------- */
+.game-card img {
+  width: 95%;
+  height: 380px;            /* ✅ image fills most of bar */
+  border-radius: 12px;
+  object-fit: cover;
+  margin-top: 10px;
+  transition: transform 0.4s ease;
+}
+
+/* ---------- GAME TITLE ---------- */
+.game-card p {
+  margin: 10px 0 10px 0;
+  color: rgb(0, 0, 0);
+  font-size: 1.4rem;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 6px 15px;
+  border-radius: 8px;
+}
+
+/* ---------- HOVER & SELECT EFFECT ---------- */
+.game-card:hover {
+  border-color: rgb(0, 0, 0);
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.6);
+  transform: scale(1.05);
+}
+
+.game-card:hover img {
+  transform: scale(1.07);
+}
+
+.game-option input[type="radio"]:checked + .game-card {
+  border-color: rgb(0, 98, 255);
+  box-shadow: 0 0 18px rgb(0, 102, 255);
+}
+
+/* ---------- BUTTON ---------- */
+button {
+  padding: 15px 40px;
+  background-color: gold;
+  color: black;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #0033ff;
+  color: white;
+  transform: scale(1.05);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 1000px) {
+  .game-options-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .game-card {
+    width: 85%;
+    height: auto;
+  }
+
+  .game-card img {
+    height: 300px;
+  }
+}
+
+
+

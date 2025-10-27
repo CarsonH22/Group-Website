@@ -1,24 +1,42 @@
-{% extends "base.html" %} {% block title%}{{super()}} - Profile{% endblock %} {%
-block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pick a Game</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='carsonstyles.css') }}">
+</head>
+<body>
 
-<h2>User Profile</h2>
-{% if error %}
-<p class="error">{{error}}</p>
-{% endif %}
+  <header>
+    <h2>Select Your Game</h2>
+  </header>
 
-<form action="" method="post">
-  <div>
-    <label for="name">Name *:</label>
-    <input type="text" name="name" id="name" required />
-  </div>
-  <div>
-    <label for="age">Age *:</label>
-    <input type="number" name="age" id="age" min="0" required />
-  </div>
-    <div>
-      <label for="favorite_game">Favorite Game:</label>
-      <input type="text" name="favorite_game" id="favorite_game" />
-  </div>
-  <button type="submit">Save Profile</button>
-</form>
-{% endblock %}
+  {% if error %}
+    <p class="error">{{ error }}</p>
+  {% endif %}
+
+  <form action="" method="post" class="game-selection">
+    <div class="game-options-container">
+      {% for game in ["Valorant", "Rainbow Six Siege", "CS:GO"] %}
+      <div class="game-option">
+        <label>
+          <input type="radio" name="game_choice" value="{{ game }}">
+          <div class="game-card">
+            <img src="{{ {
+              'Valorant': 'https://www.talkesport.com/wp-content/uploads/valorant-stuck-on-loading-screen.webp',
+              'Rainbow Six Siege': 'https://i.redd.it/s5df0ihs55981.jpg',
+              'CS:GO': 'https://media.steampowered.com/apps/csgo/blog/images/fb_image.png?v=6'
+            }[game] }}" alt="{{ game }}">
+            <p>{{ game }}</p>
+          </div>
+        </label>
+      </div>
+      {% endfor %}
+    </div>
+    <button type="submit">Continue</button>
+  </form>
+
+</body>
+</html>
+
