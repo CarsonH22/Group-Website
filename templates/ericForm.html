@@ -2,69 +2,80 @@
 
 {% block css_link %}
 <link rel="stylesheet" href="{{ url_for('static', filename='ericstyles.css') }}">
+<style>
+/* 🔹 Move body background here so Flask can inject the image */
+body {
+  background: url('{{ game_bg_url }}') no-repeat center center fixed;
+  background-size: cover;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: white;
+  min-height: 200vh; /* allows long scrolling page */
+}
+</style>
 {% endblock %}
 
-{% block title %}Add Comments{% endblock %}
-
-{% block sidebar_left %}
-<h3>{{ current_game }} Info</h3>
-<div class="game-sidebar">
-    {% if current_game == "Valorant" %}
-        <img src="https://www.talkesport.com/wp-content/uploads/valorant-stuck-on-loading-screen.webp" alt="Valorant Map">
-        <p>Tactical FPS with agents and spike planting.</p>
-    {% elif current_game == "Rainbow Six Siege" %}
-        <img src="https://i.redd.it/s5df0ihs55981.jpg" alt="Rainbow Six Siege Map">
-        <p>Team-based tactical shooter focused on objectives.</p>
-    {% elif current_game == "CS:GO" %}
-        <img src="https://media.steampowered.com/apps/csgo/blog/images/fb_image.png?v=6" alt="CS:GO Map">
-        <p>Competitive FPS, bomb defusal and hostage rescue.</p>
-    {% endif %}
-</div>
-{% endblock %}
-
-{% block sidebar_right %}
-<h3>Previous Comments for {{ current_game }}</h3>
-{% if database %}
-    <ul class="previous-comments">
-        {% for c in database %}
-            <li>
-                <strong>{{ c.name or "Anonymous" }}</strong> -
-                {% for i in range(c.rating) %}★{% endfor %}
-                {% for i in range(5 - c.rating) %}☆{% endfor %}
-                <p>{{ c.comment }}</p>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No comments yet.</p>
-{% endif %}
-
-{% endblock %}
+{% block title %}Comments - {{ current_game }}{% endblock %}
 
 {% block content %}
-<h2>Leave a Comment & Rating for {{ current_game }}</h2>
+<!-- 🔹 Wrapper for full-page layout -->
+<div class="page-wrapper">
 
-{% if error %}
-<p class="error">{{ error }}</p>
-{% endif %}
+  <!-- Comment Form (left side) -->
+  <div class="comment-form-box">
+    <h2>Leave a Comment for {{ current_game }}</h2>
 
-<form action="" method="post">
-  <label for="name">Name (optional):</label>
-  <input type="text" name="name" id="name" placeholder="Your name..." value="{{ name }}">
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
 
-  <label for="rating">Rating:</label>
-  <div class="star-rating">
-    {% for i in range(5,0,-1) %}
-      <input type="radio" id="star{{i}}" name="rating" value="{{i}}" {% if rating == i %}checked{% endif %}>
-      <label for="star{{i}}" title="{{i}} stars">★</label>
-    {% endfor %}
+    <form action="" method="post">
+      <label>Name:</label>
+      <input type="text" name="name" placeholder="Your name...">
+
+      <label>Rating:</label>
+      <div class="star-rating">
+        {% for i in range(5, 0, -1) %}
+          <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}">
+          <label for="star{{ i }}">★</label>
+        {% endfor %}
+      </div>
+
+      <label>Comment:</label>
+      <textarea name="comments" placeholder="Write your comment..."></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
   </div>
 
-  <label for="comments">Comment:</label>
-  <textarea name="comments" rows="4" cols="40">{{ comment }}</textarea>
+  <!-- Comment Display Section -->
+  <div class="comments-display">
+    {% if database %}
+      <ul>
+        {% for c in database %}
+          <li class="fade-in">
+            <strong>{{ c.user.name if c.user else "Anonymous" }}</strong> —
+            {% for i in range(c.rating) %}★{% endfor %}
+            {% for i in range(5 - c.rating) %}☆{% endfor %}
+            <p>{{ c.comment }}</p>
+            <small>
+              🆔 {{ c.user.user_uuid if c.user else 'Guest' }} |
+              ⏰ {{ c.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+            </small>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="no-comments">No comments yet. Be the first to share!</p>
+    {% endif %}
+  </div>
 
-  <button type="submit">Submit</button>
-</form>
+</div> <!-- end page-wrapper -->
 {% endblock %}
+
+
+
+
 
 
