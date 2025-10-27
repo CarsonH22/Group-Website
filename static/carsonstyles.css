@@ -82,7 +82,7 @@ header {
 /* ---------- GAME TITLE ---------- */
 .game-card p {
   margin: 10px 0 10px 0;
-  color: rgb(0, 0, 0);
+  color: gold;
   font-size: 1.4rem;
   font-weight: bold;
   background: rgba(0, 0, 0, 0.6);
