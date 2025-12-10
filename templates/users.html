@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Users{% endblock %}
+
+{% block content %}
+  <h2>Users</h2>
+  {% if users %}
+    <ul>
+      {% for u in users %}
+        <li>
+          <a href="{{ url_for('user_profile', user_id=u.id) }}">{{ u.username }}</a>
+          ({{ u.email }}) - {{ u.posts|length }} posts, {{ u.comments|length }} comments
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No users yet.</p>
+  {% endif %}
+{% endblock %}
